@@ -5,6 +5,10 @@ repositories {
     jcenter()
 }
 
+run{
+    standardInput = System.in
+}
+
 dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'com.google.code.gson:gson:2.8.1'

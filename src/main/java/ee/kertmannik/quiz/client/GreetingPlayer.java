@@ -11,6 +11,6 @@ public class GreetingPlayer {
     }
 
     public String greetPlayer(String playerName) {
-        return "Hello, " + playerName;
+        return "Hello, " + playerName + ".";
     }
 }

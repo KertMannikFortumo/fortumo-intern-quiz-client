@@ -26,7 +26,7 @@ public class GreetingPlayerTest {
     }
 
     @Test
-    public void should_return_input_when_asking_for_player_name() {
+    public void should_return_playerName_when_asking_for_player_name() {
         //given
         String userName = "anyName";
 
@@ -45,6 +45,6 @@ public class GreetingPlayerTest {
         //when
         String result = greetingPlayer.greetPlayer(userName);
         //then
-        assertThat(result).isEqualTo("Hello, anyPlayer");
+        assertThat(result).isEqualTo("Hello, anyPlayer.");
     }
 }
