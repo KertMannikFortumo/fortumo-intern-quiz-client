@@ -11,9 +11,14 @@ public class QuestionSupplier {
     private String GIST_URL = "https://fortumo-intern-quiz.herokuapp.com/question";
     private String username;
 
-    public QuestionSupplier (String username) {
+    public QuestionSupplier(String username) {
         this.username = username;
         this.questionRequest = new QuestionRequest(GIST_URL);
+    }
+
+    public QuestionSupplier(String username, QuestionRequest questionRequest) {
+        this.questionRequest = questionRequest;
+        this.username = username;
     }
 
     public Question requestQuestion() throws IOException, QuizException {
@@ -21,9 +26,8 @@ public class QuestionSupplier {
         return fromJsonToJava(result);
     }
 
-    private Question fromJsonToJava(String rawQuestion) {
+    private Question fromJsonToJava(String rawQuestion) throws QuizException {
         final Gson gson = new Gson();
         return gson.fromJson(rawQuestion, Question.class);
     }
-
 }

@@ -12,7 +12,9 @@ public class QuestionRequest {
 
     String url;
 
-    QuestionRequest(String url) { this.url = url;}
+    QuestionRequest(String url) {
+        this.url = url;
+    }
 
     public String getQuestionFromServer(String playerName) throws IOException, QuizException {
         final OkHttpClient client = new OkHttpClient();

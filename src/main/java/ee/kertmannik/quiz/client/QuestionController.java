@@ -13,9 +13,13 @@ public class QuestionController {
         this.questionSupplier = new QuestionSupplier(username);
     }
 
+    QuestionController(QuestionSupplier questionSupplier) {
+        this.questionSupplier = questionSupplier;
+    }
+
     public void getQuestion() throws IOException, QuizException {
         this.question = this.questionSupplier.requestQuestion();
-        System.out.println("\n("
+        System.out.print("\n("
                 + this.question.getCategory()
                 + ", "
                 + this.question.getDifficulty()
