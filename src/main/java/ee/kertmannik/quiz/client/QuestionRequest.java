@@ -10,25 +10,30 @@ import java.net.UnknownHostException;
 
 public class QuestionRequest {
 
-    String url;
+    private String url;
+    private final OkHttpClient client = new OkHttpClient();
 
     QuestionRequest(String url) {
         this.url = url;
     }
 
-    public String getQuestionFromServer(String playerName) throws IOException, QuizException {
-        final OkHttpClient client = new OkHttpClient();
+    public String getQuestionFromServer(String playerName) throws IOException {
         final Request request = new Request.Builder()
                 .url(url)
                 .addHeader("x-player-name", playerName)
                 .build();
+        Response response = null;
         try {
-            final Response response = client.newCall(request).execute();
+            response = this.client.newCall(request).execute();
             return response.body().string();
         } catch (SocketTimeoutException exception) {
             throw new QuizException("GET request timed out.");
         } catch (UnknownHostException exception) {
             throw new QuizException("Incorrect URL link");
+        } finally {
+            if (response != null && response.body() != null) {
+                response.body().close();
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ public class QuestionController {
         this.questionSupplier = questionSupplier;
     }
 
-    public void getQuestion() throws IOException, QuizException {
+    public void getQuestion() throws IOException {
         this.question = this.questionSupplier.requestQuestion();
         System.out.print("\n("
                 + this.question.getCategory()

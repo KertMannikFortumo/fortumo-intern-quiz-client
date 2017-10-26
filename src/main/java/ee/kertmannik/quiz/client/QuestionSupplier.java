@@ -21,7 +21,7 @@ public class QuestionSupplier {
         this.username = username;
     }
 
-    public Question requestQuestion() throws IOException, QuizException {
+    public Question requestQuestion() throws IOException {
         final String result = this.questionRequest.getQuestionFromServer(this.username);
         return fromJsonToJava(result);
     }
