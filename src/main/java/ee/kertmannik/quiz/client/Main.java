@@ -6,16 +6,15 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
         PlayerGreeting PlayerGreeting = new PlayerGreeting();
-        QuestionController questionController = new QuestionController();
 
         String username = PlayerGreeting.getPlayerName();
         PlayerGreeting.greetPlayer(username);
 
         try {
-            String question = questionController.displayableQuestion(username);
-            System.out.println(question);
+            QuestionController questionController = new QuestionController(username);
+            questionController.getQuestion();
         } catch (QuizException exception) {
-            System.out.println(exception.getMessage());
+            System.out.println("\n" + exception.getMessage());
         }
     }
 }

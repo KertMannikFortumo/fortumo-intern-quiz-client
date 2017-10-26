@@ -9,5 +9,4 @@ public class CommandLineScanner {
         System.out.print(question);
         return scanner.next();
     }
-
 }

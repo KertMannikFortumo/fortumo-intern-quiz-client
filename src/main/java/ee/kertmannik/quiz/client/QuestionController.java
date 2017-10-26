@@ -7,27 +7,33 @@ import java.io.IOException;
 
 public class QuestionController {
 
+    private String username;
+    private String GIST_URL = "https://fortumo-intern-quiz.herokuapp.com/question";
     private Question question;
+    private QuestionRequest questionRequest;
 
-    private Question getQuestion(String username) throws IOException, QuizException {
-        final QuestionRequest questionRequest = new QuestionRequest();
-        final String result = questionRequest.getQuestionFromServer(username);
-        return this.fromJsonToJava(result);
+    QuestionController(String username) {
+        this.username = username;
+        this.questionRequest = new QuestionRequest(GIST_URL);
     }
 
-    public String displayableQuestion(String username) throws IOException, QuizException {
-        if (this.question == null) {
-            this.question = this.getQuestion(username);
-        }
-        return "("
+    public void getQuestion() throws IOException, QuizException {
+        final String rawQuestion = this.requestQuestion();
+        this.question = this.fromJsonToJava(rawQuestion);
+        System.out.println("\n("
                 + this.question.getCategory()
                 + ", "
                 + this.question.getDifficulty()
                 + ") "
-                + this.question.getQuestion();
+                + this.question.getQuestion());
     }
 
-    public Question fromJsonToJava(String rawQuestion) {
+    private String requestQuestion() throws IOException, QuizException {
+        final String result = this.questionRequest.getQuestionFromServer(this.username);
+        return result;
+    }
+
+    private Question fromJsonToJava(String rawQuestion) {
         final Gson gson = new Gson();
         return gson.fromJson(rawQuestion, Question.class);
     }

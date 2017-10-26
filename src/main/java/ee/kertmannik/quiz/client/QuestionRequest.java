@@ -6,15 +6,18 @@ import okhttp3.Response;
 
 import java.io.IOException;
 import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 public class QuestionRequest {
 
-    public static final String URL = "https://fortumo-intern-quiz.herokuapp.com/question";
+    String url;
+
+    QuestionRequest(String url) { this.url = url;}
 
     public String getQuestionFromServer(String playerName) throws IOException, QuizException {
         final OkHttpClient client = new OkHttpClient();
         final Request request = new Request.Builder()
-                .url(URL)
+                .url(url)
                 .addHeader("x-player-name", playerName)
                 .build();
         try {
@@ -22,6 +25,8 @@ public class QuestionRequest {
             return response.body().string();
         } catch (SocketTimeoutException exception) {
             throw new QuizException("GET request timed out.");
+        } catch (UnknownHostException exception) {
+            throw new QuizException("Incorrect URL link");
         }
     }
 }

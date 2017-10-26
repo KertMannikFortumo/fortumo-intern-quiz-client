@@ -43,8 +43,8 @@ public class PlayerGreetingTest {
         String userName = "anyPlayer";
 
         //when
-        String result = playerGreeting.greetPlayer(userName);
+        playerGreeting.greetPlayer(userName);
         //then
-        assertThat(result).isEqualTo("Hello, anyPlayer.");
+        assertThat(this.systemOutRule.getLog()).isEqualTo("Hello, anyPlayer.");
     }
 }
