@@ -13,8 +13,11 @@ public class Main {
         try {
             QuestionController questionController = new QuestionController(username);
             questionController.getQuestion();
+            questionController.postAnswer();
         } catch (QuizException exception) {
             System.out.println("\n" + exception.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
