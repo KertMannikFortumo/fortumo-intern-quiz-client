@@ -9,9 +9,9 @@ import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.contrib.java.lang.system.TextFromStandardInputStream.emptyStandardInputStream;
 
-public class GreetingPlayerTest {
+public class PlayerGreetingTest {
 
-    private GreetingPlayer greetingPlayer;
+    private PlayerGreeting playerGreeting;
 
     @Rule
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
@@ -22,7 +22,7 @@ public class GreetingPlayerTest {
 
     @Before
     public void initialize() throws Exception {
-        this.greetingPlayer = new GreetingPlayer();
+        this.playerGreeting = new PlayerGreeting();
     }
 
     @Test
@@ -34,7 +34,7 @@ public class GreetingPlayerTest {
         this.systemInMock.provideLines(userName);
 
         //then
-        assertThat(this.greetingPlayer.getPlayerName()).isEqualTo("anyName");
+        assertThat(this.playerGreeting.getPlayerName()).isEqualTo("anyName");
     }
 
     @Test
@@ -43,8 +43,8 @@ public class GreetingPlayerTest {
         String userName = "anyPlayer";
 
         //when
-        String result = greetingPlayer.greetPlayer(userName);
+        playerGreeting.greetPlayer(userName);
         //then
-        assertThat(result).isEqualTo("Hello, anyPlayer.");
+        assertThat(this.systemOutRule.getLog()).isEqualTo("Hello, anyPlayer.");
     }
 }
