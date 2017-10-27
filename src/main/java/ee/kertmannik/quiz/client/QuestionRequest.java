@@ -24,7 +24,7 @@ public class QuestionRequest {
                     .url(url)
                     .addHeader("x-player-name", playerName)
                     .build();
-        }catch (IllegalArgumentException exception) {
+        } catch (IllegalArgumentException exception) {
             throw new QuizException("Illegal url");
         }
         Response response = null;

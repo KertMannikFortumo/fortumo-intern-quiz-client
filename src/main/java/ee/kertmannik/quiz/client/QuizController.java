@@ -14,7 +14,8 @@ public class QuizController {
 
     QuizController(String username) {
         this.questionSupplier = new QuestionSupplier(username, new QuestionRequest(this.GIST_URL));
-        this.answerSupplier = new AnswerSupplier(username, new AnswerRequest(this.ANSWER_URL), new CommandLineScanner());
+        this.answerSupplier =
+                new AnswerSupplier(username, new AnswerRequest(this.ANSWER_URL), new CommandLineScanner());
     }
 
     QuizController(QuestionSupplier questionSupplier) {

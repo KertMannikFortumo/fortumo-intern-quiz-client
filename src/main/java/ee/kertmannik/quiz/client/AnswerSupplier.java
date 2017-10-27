@@ -39,7 +39,7 @@ public class AnswerSupplier {
         return gson.toJson(rawAnswer);
     }
 
-    public String sendPostRequest(String jsonAnswer) throws Exception {
+    private String sendPostRequest(String jsonAnswer) throws Exception {
         return this.answerRequest.postAnswerToServer(jsonAnswer, this.username);
     }
 }
