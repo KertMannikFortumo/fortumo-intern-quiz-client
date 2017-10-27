@@ -1,6 +1,5 @@
 package ee.kertmannik.quiz.client;
 
-import com.google.gson.Gson;
 import ee.kertmannik.quiz.client.model.Question;
 
 import java.io.IOException;
@@ -31,19 +30,9 @@ public class QuestionController {
                 + this.question.getQuestion());
     }
 
-    public void postAnswer() throws Exception {
-        CommandLineScanner commandLineScanner = new CommandLineScanner();
-        AnswerRequest answerRequest = new AnswerRequest(ANSWER_URL, this.username);
-        String userAnswer = commandLineScanner.getUserInputWithMessagePrinted("");
-        String jsonAnswer = fromJsonToJava(userAnswer);
-        System.out.println(jsonAnswer);
-        String serverAnswer = answerRequest.postAnswerToServer(userAnswer, this.username);
-        System.out.println(serverAnswer);
-    }
-
-
-    private String fromJsonToJava(String rawAnswer) throws QuizException {
-        final Gson gson = new Gson();
-        return gson.toJson(rawAnswer);
+    public void postAnswer() {
+        AnswerController answerController = new AnswerController(this.question.getQuestionId(), this.username,
+                this.ANSWER_URL);
+        answerController.getAndSendUserAnswer();
     }
 }
