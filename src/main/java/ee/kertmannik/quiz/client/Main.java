@@ -11,9 +11,9 @@ public class Main {
         PlayerGreeting.greetPlayer(username);
 
         try {
-            QuestionController questionController = new QuestionController(username);
-            questionController.getQuestion();
-            questionController.postAnswer();
+            QuizController quizController = new QuizController(username);
+            quizController.getQuestion();
+            quizController.postAnswer();
         } catch (QuizException exception) {
             System.out.println("\n" + exception.getMessage());
         } catch (Exception e) {

@@ -13,25 +13,23 @@ import java.net.UnknownHostException;
 public class AnswerRequest {
 
     private String url;
-    private String playerName;
+    private OkHttpClient client = new OkHttpClient();
 
-    AnswerRequest(String url, String username) {
+    AnswerRequest(String url) {
         this.url = url;
-        this.playerName = username;
     }
 
-    public String postAnswerToServer(String answer) throws IOException {
-        final OkHttpClient client = new OkHttpClient();
+    public String postAnswerToServer(String answer, String playerName) throws IOException {
         final RequestBody body = RequestBody.create(MediaType.parse("text/plain"), answer);
         final Request request = new Request.Builder()
-                .url(url)
-                .addHeader("x-player-name", this.playerName)
+                .url(this.url)
+                .addHeader("x-player-name", playerName)
                 .post(body)
                 .build();
 
         Response response = null;
         try {
-            response = client.newCall(request).execute();
+            response = this.client.newCall(request).execute();
             return response.body().string();
         } catch (SocketTimeoutException exception) {
             throw new QuizException("POST request timed out.");

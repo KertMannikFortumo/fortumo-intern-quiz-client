@@ -4,7 +4,7 @@ public class PlayerGreeting {
 
     public String getPlayerName() {
         CommandLineScanner commandLineScanner = new CommandLineScanner();
-        return commandLineScanner.getUserInputWithMessagePrinted("Enter your name: ");
+        return commandLineScanner.getUserInputWithMessage("Enter your name: ");
     }
 
     public void greetPlayer(String playerName) {

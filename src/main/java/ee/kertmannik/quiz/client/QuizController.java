@@ -4,20 +4,24 @@ import ee.kertmannik.quiz.client.model.Question;
 
 import java.io.IOException;
 
-public class QuestionController {
+public class QuizController {
 
     private Question question;
-    private String username;
     private String ANSWER_URL = "https://fortumo-intern-quiz.herokuapp.com/answer";
     private QuestionSupplier questionSupplier;
+    private AnswerSupplier answerSupplier;
 
-    QuestionController(String username) {
-        this.username = username;
+    QuizController(String username) {
         this.questionSupplier = new QuestionSupplier(username);
+        this.answerSupplier = new AnswerSupplier(username, this.ANSWER_URL);
     }
 
-    QuestionController(QuestionSupplier questionSupplier) {
+    QuizController(QuestionSupplier questionSupplier) {
         this.questionSupplier = questionSupplier;
+    }
+
+    QuizController(AnswerSupplier answerSupplier) {
+        this.answerSupplier = answerSupplier;
     }
 
     public void getQuestion() throws IOException {
@@ -31,8 +35,7 @@ public class QuestionController {
     }
 
     public void postAnswer() {
-        AnswerController answerController = new AnswerController(this.question.getQuestionId(), this.username,
-                this.ANSWER_URL);
-        answerController.getAndSendUserAnswer();
+        String serverAnswer = this.answerSupplier.getAndSendUserAnswer(this.question.getQuestionId());
+        System.out.println(serverAnswer);
     }
 }

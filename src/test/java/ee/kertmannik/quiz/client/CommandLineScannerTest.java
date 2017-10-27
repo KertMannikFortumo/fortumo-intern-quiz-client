@@ -34,7 +34,7 @@ public class CommandLineScannerTest {
         this.systemInMock.provideLines(anyString);
 
         //then
-        assertThat(commandLineScanner.getUserInputWithMessagePrinted("Do you like this quiz?")).isEqualTo(anyString);
+        assertThat(commandLineScanner.getUserInputWithMessage("Do you like this quiz?")).isEqualTo(anyString);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class CommandLineScannerTest {
         this.systemInMock.provideLines(anyString);
 
         //then
-        assertThat(commandLineScanner.getUserInputWithMessagePrinted("Do you like this quiz?")).isEqualTo(anyString);
+        assertThat(commandLineScanner.getUserInputWithMessage("Do you like this quiz?")).isEqualTo(anyString);
     }
 
     @Test
@@ -56,7 +56,7 @@ public class CommandLineScannerTest {
 
         //when
         this.systemInMock.provideLines("anyString");
-        commandLineScanner.getUserInputWithMessagePrinted(message);
+        commandLineScanner.getUserInputWithMessage(message);
         String print = this.systemOutRule.getLog();
 
         //then

@@ -18,10 +18,15 @@ public class QuestionRequest {
     }
 
     public String getQuestionFromServer(String playerName) throws IOException {
-        final Request request = new Request.Builder()
-                .url(url)
-                .addHeader("x-player-name", playerName)
-                .build();
+        Request request;
+        try {
+            request = new Request.Builder()
+                    .url(url)
+                    .addHeader("x-player-name", playerName)
+                    .build();
+        }catch (IllegalArgumentException exception) {
+            throw new QuizException("Illegal url");
+        }
         Response response = null;
         try {
             response = this.client.newCall(request).execute();
