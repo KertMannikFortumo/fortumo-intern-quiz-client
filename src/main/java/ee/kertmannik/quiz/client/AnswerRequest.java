@@ -32,9 +32,9 @@ public class AnswerRequest {
             response = this.client.newCall(request).execute();
             return response.body().string();
         } catch (SocketTimeoutException exception) {
-            throw new QuizException("POST request timed out.");
+            throw new QuizException("POST request timed out.", exception);
         } catch (UnknownHostException exception) {
-            throw new QuizException("Incorrect URL link");
+            throw new QuizException("Incorrect URL link", exception);
         } finally {
             if (response != null && response.body() != null) {
                 response.body().close();

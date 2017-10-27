@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AnswerRequestTest {
 
     @Test
-    public void Should_return_response_Body_as_String() throws Exception {
+    public void should_return_response_body_as_String() throws Exception {
         //given
         MockWebServer server = new MockWebServer();
         server.start();

@@ -7,15 +7,15 @@ import java.io.IOException;
 public class QuizController {
 
     private Question question;
-    private String ANSWER_URL = "https://fortumo-intern-quiz.herokuapp.com/answer";
-    private String GIST_URL = "https://fortumo-intern-quiz.herokuapp.com/question";
+    private static final String ANSWER_URL = "https://fortumo-intern-quiz.herokuapp.com/answer";
+    private static final String GIST_URL = "https://fortumo-intern-quiz.herokuapp.com/question";
     private QuestionSupplier questionSupplier;
     private AnswerSupplier answerSupplier;
 
-    QuizController(String username) {
-        this.questionSupplier = new QuestionSupplier(username, new QuestionRequest(this.GIST_URL));
+    public QuizController(String username) {
+        this.questionSupplier = new QuestionSupplier(username, new QuestionRequest(GIST_URL));
         this.answerSupplier =
-                new AnswerSupplier(username, new AnswerRequest(this.ANSWER_URL), new CommandLineScanner());
+                new AnswerSupplier(username, new AnswerRequest(ANSWER_URL), new CommandLineScanner());
     }
 
     QuizController(QuestionSupplier questionSupplier) {

@@ -3,6 +3,8 @@ package ee.kertmannik.quiz.client;
 import com.google.gson.Gson;
 import ee.kertmannik.quiz.client.model.Answer;
 
+import java.io.IOException;
+
 public class AnswerSupplier {
 
     private String username;
@@ -20,8 +22,8 @@ public class AnswerSupplier {
         String jsonAnswer = this.convertAnswer(userAnswer, questionId);
         try {
             return this.sendPostRequest(jsonAnswer);
-        } catch (Exception exception) {
-            throw new QuizException("Problem sending answer to server.");
+        } catch (IOException exception) {
+            throw new QuizException("Problem with POST request", exception);
         }
     }
 
@@ -39,7 +41,7 @@ public class AnswerSupplier {
         return gson.toJson(rawAnswer);
     }
 
-    private String sendPostRequest(String jsonAnswer) throws Exception {
+    private String sendPostRequest(String jsonAnswer) throws IOException {
         return this.answerRequest.postAnswerToServer(jsonAnswer, this.username);
     }
 }

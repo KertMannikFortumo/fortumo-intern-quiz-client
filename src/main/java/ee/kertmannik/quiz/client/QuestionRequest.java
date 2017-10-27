@@ -25,16 +25,16 @@ public class QuestionRequest {
                     .addHeader("x-player-name", playerName)
                     .build();
         } catch (IllegalArgumentException exception) {
-            throw new QuizException("Illegal url");
+            throw new QuizException("Illegal url", exception);
         }
         Response response = null;
         try {
             response = this.client.newCall(request).execute();
             return response.body().string();
         } catch (SocketTimeoutException exception) {
-            throw new QuizException("GET request timed out.");
+            throw new QuizException("GET request timed out.", exception);
         } catch (UnknownHostException exception) {
-            throw new QuizException("Incorrect URL link");
+            throw new QuizException("Incorrect URL link", exception);
         } finally {
             if (response != null && response.body() != null) {
                 response.body().close();

@@ -16,8 +16,6 @@ public class Main {
             quizController.postAnswer();
         } catch (QuizException exception) {
             System.out.println("\n" + exception.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }
