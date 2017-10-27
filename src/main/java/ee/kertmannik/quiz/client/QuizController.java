@@ -11,6 +11,7 @@ public class QuizController {
     private static final String GIST_URL = "https://fortumo-intern-quiz.herokuapp.com/question";
     private QuestionSupplier questionSupplier;
     private AnswerSupplier answerSupplier;
+    private String answerStatus = "notAnswered";
 
     public QuizController(String username) {
         this.questionSupplier = new QuestionSupplier(username, new QuestionRequest(GIST_URL));
@@ -34,6 +35,20 @@ public class QuizController {
 
     public void postAnswer() {
         String serverAnswer = this.answerSupplier.getAndSendUserAnswer(this.question.getQuestionId());
+        this.answerStatus = serverAnswer;
         System.out.println(serverAnswer);
+    }
+
+    public void decidingContinuation() {
+        CommandLineScanner scanner = new CommandLineScanner();
+        if ("wrong".equals(this.answerStatus)) {
+            String playerDecision = "";
+            while (!playerDecision.equals("y") || !playerDecision.equals("n")) {
+                playerDecision = scanner.getUserInputWithMessage("Wrong answer! Do you want to continue? [y/n]");
+            }
+        } else if ("correct".equals(this.answerStatus)) {
+
+        }
+        this.answerStatus = "notAnswered";
     }
 }

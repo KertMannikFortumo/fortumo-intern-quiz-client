@@ -14,6 +14,7 @@ public class Main {
             QuizController quizController = new QuizController(username);
             quizController.getQuestion();
             quizController.postAnswer();
+            quizController.decidingContinuation();
         } catch (QuizException exception) {
             System.out.println("\n" + exception.getMessage());
         }
