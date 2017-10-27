@@ -12,21 +12,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-public class QuestionControllerTest {
+public class QuizControllerTest {
 
     @Rule
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
 
     @Test
-    public void should_return_question_object() throws IOException, QuizException {
+    public void should_return_question_object() throws IOException {
         //given
         QuestionSupplier mock = mock(QuestionSupplier.class);
-        QuestionController questionController = new QuestionController(mock);
+        QuizController quizController = new QuizController(mock);
         given(mock.requestQuestion()).willReturn(new Question("anyId", "AnyQuestion", "anyCategory", 999,
                 Arrays.asList("anyAnswers")));
 
         //when
-        questionController.getQuestion();
+        quizController.getQuestion();
 
         //then
         assertThat(this.systemOutRule.getLog()).isEqualTo("\n" + "(anyCategory, 999) AnyQuestion");

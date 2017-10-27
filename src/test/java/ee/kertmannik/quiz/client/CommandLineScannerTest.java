@@ -26,7 +26,7 @@ public class CommandLineScannerTest {
     }
 
     @Test
-    public void should_return_user_input() {
+    public void should_return_user_input_with_one_word() {
         //given
         String anyString = "anyString";
 
@@ -34,7 +34,19 @@ public class CommandLineScannerTest {
         this.systemInMock.provideLines(anyString);
 
         //then
-        assertThat(commandLineScanner.getUserInputWithMessagePrinted("Do you like this quiz?")).isEqualTo(anyString);
+        assertThat(commandLineScanner.getUserInputWithMessage("Do you like this quiz?")).isEqualTo(anyString);
+    }
+
+    @Test
+    public void should_return_user_input_with_more_than_one_word() {
+        //given
+        String anyString = "anyString and anyString";
+
+        //when
+        this.systemInMock.provideLines(anyString);
+
+        //then
+        assertThat(commandLineScanner.getUserInputWithMessage("Do you like this quiz?")).isEqualTo(anyString);
     }
 
     @Test
@@ -44,7 +56,7 @@ public class CommandLineScannerTest {
 
         //when
         this.systemInMock.provideLines("anyString");
-        commandLineScanner.getUserInputWithMessagePrinted(message);
+        commandLineScanner.getUserInputWithMessage(message);
         String print = this.systemOutRule.getLog();
 
         //then

@@ -4,9 +4,14 @@ import java.util.Scanner;
 
 public class CommandLineScanner {
 
-    public String getUserInputWithMessagePrinted(String question) {
+    public String getUserInputWithMessage(String question) {
         Scanner scanner = new Scanner(System.in);
         System.out.print(question);
-        return scanner.next();
+        return scanner.nextLine();
+    }
+
+    public String getUserInputWithoutMessage() {
+        Scanner scanner = new Scanner(System.in);
+        return scanner.nextLine();
     }
 }

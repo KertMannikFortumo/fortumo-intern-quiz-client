@@ -29,7 +29,7 @@ public class QuestionRequestTest {
     @Test
     public void should_throw_QuizException_if_url_is_incorrect() throws IOException, QuizException {
         //given
-        String anyURL = "https://www.anyURL.ee";
+        String anyURL = "anyURL";
         QuestionRequest questionRequest = new QuestionRequest(anyURL);
 
         //when
