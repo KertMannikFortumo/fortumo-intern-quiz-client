@@ -6,11 +6,13 @@ import ee.kertmannik.quiz.client.model.Answer;
 public class AnswerSupplier {
 
     private String username;
-    private String serverAnswerURL;
+    private AnswerRequest answerRequest;
+    private CommandLineScanner commandLineScanner;
 
-    public AnswerSupplier(String username, String url) {
+    public AnswerSupplier(String username, AnswerRequest answerRequest, CommandLineScanner scanner) {
         this.username = username;
-        this.serverAnswerURL = url;
+        this.answerRequest = answerRequest;
+        this.commandLineScanner = scanner;
     }
 
     public String getAndSendUserAnswer(String questionId) {
@@ -24,8 +26,7 @@ public class AnswerSupplier {
     }
 
     private String getAnswer() {
-        CommandLineScanner commandLineScanner = new CommandLineScanner();
-        return commandLineScanner.getUserInputWithoutMessage();
+        return this.commandLineScanner.getUserInputWithoutMessage();
     }
 
     private String convertAnswer(String userAnswer, String questionId) {
@@ -38,8 +39,7 @@ public class AnswerSupplier {
         return gson.toJson(rawAnswer);
     }
 
-    private String sendPostRequest(String jsonAnswer) throws Exception {
-        AnswerRequest answerRequest = new AnswerRequest(this.serverAnswerURL);
-        return answerRequest.postAnswerToServer(jsonAnswer, this.username);
+    public String sendPostRequest(String jsonAnswer) throws Exception {
+        return this.answerRequest.postAnswerToServer(jsonAnswer, this.username);
     }
 }
