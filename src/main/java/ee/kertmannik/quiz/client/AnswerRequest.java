@@ -19,13 +19,18 @@ public class AnswerRequest {
         this.url = url;
     }
 
-    public String postAnswerToServer(String answer, String playerName) throws IOException {
+    public String postAnswerToServer(String answer, String playerName) {
         final RequestBody body = RequestBody.create(MediaType.parse("text/plain"), answer);
-        final Request request = new Request.Builder()
+        Request request;
+        try {
+            request = new Request.Builder()
                 .url(this.url)
                 .addHeader("x-player-name", playerName)
                 .post(body)
                 .build();
+        } catch (IllegalArgumentException exception) {
+            throw new QuizException("Illegal url", exception);
+        }
 
         Response response = null;
         try {
@@ -35,6 +40,8 @@ public class AnswerRequest {
             throw new QuizException("POST request timed out.", exception);
         } catch (UnknownHostException exception) {
             throw new QuizException("Incorrect URL link", exception);
+        } catch (IOException exception) {
+            throw new QuizException("An input or output operation failed/interpreted.", exception);
         } finally {
             if (response != null && response.body() != null) {
                 response.body().close();

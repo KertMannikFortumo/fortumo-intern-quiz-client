@@ -31,4 +31,21 @@ public class QuizControllerTest {
         //then
         assertThat(this.systemOutRule.getLog()).isEqualTo("\n" + "(anyCategory, 999) AnyQuestion");
     }
+
+    @Test
+    public void should_continue_game_if_user_answers_correctly_and_wants_to_start_the_game_again() throws IOException {
+        //given
+        QuestionSupplier mockQuestion = mock(QuestionSupplier.class);
+        AnswerSupplier mockAnswer = mock(AnswerSupplier.class);
+        CommandLineScanner mockScanner = mock(CommandLineScanner.class);
+        QuizController quizController =
+                new QuizController(mockAnswer, mockQuestion, new CommandLineScanner(), "correct");
+        given(mockScanner.getPlayerDecisionWithValidation(Arrays.asList("anyValidInput"), "anyMessage")).willReturn("anyPlayerDecision");
+
+        //when
+        quizController.decidingContinuation();
+
+        //then
+
+    }
 }

@@ -66,16 +66,16 @@ public class CommandLineScannerTest {
     }
 
     @Test
-    public void should() {
+    public void should_display_message_again_if_first_input_is_not_validanswer() {
         //given
         String message = "anyMessage";
         List<String> validAnswers = Arrays.asList("y", "n");
 
         //when
-        this.systemInMock.provideLines("n");
+        this.systemInMock.provideLines("asda", "n");
         commandLineScanner.getPlayerDecisionWithValidation(validAnswers, message);
 
         //then
-        assertThat(this.systemOutRule.getLog()).isEqualTo(message);
+        assertThat(this.systemOutRule.getLog()).isEqualTo(message+message);
     }
 }

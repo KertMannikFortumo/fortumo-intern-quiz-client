@@ -20,8 +20,14 @@ public class QuizController {
                 new AnswerSupplier(username, new AnswerRequest(ANSWER_URL), new CommandLineScanner());
     }
 
-    QuizController(QuestionSupplier questionSupplier) {
+    public QuizController(QuestionSupplier questionSupplier) {
         this.questionSupplier = questionSupplier;
+    }
+
+    public QuizController(AnswerSupplier answerSupplier, QuestionSupplier questionSupplier, CommandLineScanner scanner, String answerStatus) {
+        this.answerSupplier = answerSupplier;
+        this.questionSupplier = questionSupplier;
+        this.answerStatus = answerStatus;
     }
 
     public void startTheGame() throws IOException {
@@ -43,7 +49,6 @@ public class QuizController {
     public void postAnswer() {
         String serverAnswer = this.answerSupplier.getAndSendUserAnswer(this.question.getQuestionId());
         this.answerStatus = serverAnswer;
-        System.out.println(serverAnswer);
     }
 
     public void decidingContinuation() throws IOException {
