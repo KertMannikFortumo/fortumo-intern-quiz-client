@@ -3,6 +3,7 @@ package ee.kertmannik.quiz.client;
 import ee.kertmannik.quiz.client.model.Question;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class QuizController {
 
@@ -23,6 +24,12 @@ public class QuizController {
         this.questionSupplier = questionSupplier;
     }
 
+    public void startTheGame() throws IOException {
+        this.getQuestion();
+        this.postAnswer();
+        this.decidingContinuation();
+    }
+
     public void getQuestion() throws IOException {
         this.question = this.questionSupplier.requestQuestion();
         System.out.print("\n("
@@ -39,15 +46,26 @@ public class QuizController {
         System.out.println(serverAnswer);
     }
 
-    public void decidingContinuation() {
+    public void decidingContinuation() throws IOException {
         CommandLineScanner scanner = new CommandLineScanner();
         if ("wrong".equals(this.answerStatus)) {
-            String playerDecision = "";
-            while (!playerDecision.equals("y") || !playerDecision.equals("n")) {
-                playerDecision = scanner.getUserInputWithMessage("Wrong answer! Do you want to continue? [y/n]");
+            String playerDecision =
+                    scanner.getPlayerDecisionWithValidation(Arrays.asList("y", "n"), "Wrong answer! Do you want to continue? [y/n]");
+            if (playerDecision.equals("y")) {
+                System.out.println("Answer again: ");
+                this.postAnswer();
+                this.decidingContinuation();
+            } else if (playerDecision.equals("n")) {
+                System.out.println("Good game! THE END");
             }
         } else if ("correct".equals(this.answerStatus)) {
-
+            String playerDecision = scanner.getPlayerDecisionWithValidation(Arrays.asList("y", "n"),
+                    "Congrats! You answer was correct! Do you want to continue? [y/n]");
+            if (playerDecision.equals("y")) {
+                this.startTheGame();
+            } else if (playerDecision.equals("n")) {
+                System.out.println("Good game! THE END");
+            }
         }
         this.answerStatus = "notAnswered";
     }

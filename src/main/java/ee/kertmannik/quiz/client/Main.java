@@ -12,9 +12,7 @@ public class Main {
 
         try {
             QuizController quizController = new QuizController(username);
-            quizController.getQuestion();
-            quizController.postAnswer();
-            quizController.decidingContinuation();
+            quizController.startTheGame();
         } catch (QuizException exception) {
             System.out.println("\n" + exception.getMessage());
         }

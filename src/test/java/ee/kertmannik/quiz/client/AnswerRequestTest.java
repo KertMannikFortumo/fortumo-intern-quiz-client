@@ -25,4 +25,14 @@ public class AnswerRequestTest {
         //then
         assertThat(result).isEqualTo("Lars is the best!!!");
     }
+
+    @Test
+    public void should_throw_quizException_if_url_is_incorrect(){
+        //given
+
+        //when
+
+        //then
+
+    }
 }
