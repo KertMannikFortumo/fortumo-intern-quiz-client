@@ -45,6 +45,6 @@ public class PlayerGreetingTest {
         //when
         playerGreeting.greetPlayer(userName);
         //then
-        assertThat(this.systemOutRule.getLog()).isEqualTo("Hello, anyPlayer.");
+        assertThat(this.systemOutRule.getLog().trim()).isEqualTo("Hello, anyPlayer.");
     }
 }

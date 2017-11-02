@@ -5,7 +5,10 @@ import okhttp3.mockwebserver.MockResponse;
 import okhttp3.mockwebserver.MockWebServer;
 import org.junit.Test;
 
+import java.io.IOException;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.fail;
 
 public class AnswerRequestTest {
 
@@ -24,5 +27,22 @@ public class AnswerRequestTest {
 
         //then
         assertThat(result).isEqualTo("Lars is the best!!!");
+    }
+
+    @Test
+    public void should_throw_QuizException_if_url_is_incorrect() throws IOException, QuizException {
+        //given
+        String anyURL = "anyURL";
+        String answer = "anyAnswer";
+        String player = "anyPlayer";
+        AnswerRequest answerRequest = new AnswerRequest(anyURL);
+
+        //when
+        try {
+            String result = answerRequest.postAnswerToServer(answer, player);
+            fail("Should throw QuizException if invalid url link is given");
+        } catch (QuizException expected) {
+
+        }
     }
 }

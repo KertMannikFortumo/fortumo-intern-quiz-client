@@ -8,6 +8,6 @@ public class PlayerGreeting {
     }
 
     public void greetPlayer(String playerName) {
-        System.out.print("Hello, " + playerName + ".");
+        System.out.println("Hello, " + playerName + ".");
     }
 }

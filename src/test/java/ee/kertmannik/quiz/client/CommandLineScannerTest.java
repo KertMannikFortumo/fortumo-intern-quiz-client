@@ -6,6 +6,9 @@ import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
 import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.contrib.java.lang.system.TextFromStandardInputStream.emptyStandardInputStream;
 
@@ -50,16 +53,31 @@ public class CommandLineScannerTest {
     }
 
     @Test
-    public void should_print_message_parameter(){
+    public void should_print_message_parameter() {
         //given
         String message = "anyMessage";
 
         //when
         this.systemInMock.provideLines("anyString");
         commandLineScanner.getUserInputWithMessage(message);
-        String print = this.systemOutRule.getLog();
 
         //then
-        assertThat(print).isEqualTo(message);
+        assertThat(this.systemOutRule.getLog().trim()).isEqualTo(message);
+    }
+
+    @Test
+    public void should_display_message_again_if_first_input_is_not_valid_answer() {
+        //given
+        String message = "anyMessage";
+        List<String> validAnswers = Arrays.asList("y", "n");
+
+        //when
+        this.systemInMock.provideLines("asda", "n");
+        commandLineScanner.getPlayerDecisionWithValidation(validAnswers, message);
+        String[] splitLog = this.systemOutRule.getLog().trim().split("\n");
+
+        //then
+        assertThat(splitLog[0].trim()).isEqualTo(message);
+        assertThat(splitLog[1]).isEqualTo(message);
     }
 }
