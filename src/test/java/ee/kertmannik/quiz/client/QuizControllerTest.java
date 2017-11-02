@@ -1,6 +1,7 @@
 package ee.kertmannik.quiz.client;
 
 import ee.kertmannik.quiz.client.model.Question;
+import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.contrib.java.lang.system.SystemOutRule;
@@ -13,8 +14,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.contrib.java.lang.system.TextFromStandardInputStream.emptyStandardInputStream;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class QuizControllerTest {
+
+    private QuestionSupplier mockQuestion;
+    private AnswerSupplier mockAnswer;
+    private Question question;
 
     @Rule
     public final SystemOutRule systemOutRule = new SystemOutRule().enableLog();
@@ -23,13 +29,20 @@ public class QuizControllerTest {
     public final TextFromStandardInputStream systemInMock
             = emptyStandardInputStream();
 
+    @Before
+    public void initialize() {
+        this.mockQuestion = mock(QuestionSupplier.class);
+        this.mockAnswer = mock(AnswerSupplier.class);
+        this.question = new Question("anyId", "AnyQuestion", "anyCategory", 999,
+                Arrays.asList("anyAnswers"));
+    }
+
     @Test
     public void should_return_question_object() throws IOException {
         //given
-        QuestionSupplier mock = mock(QuestionSupplier.class);
-        QuizController quizController = new QuizController(mock);
-        given(mock.requestQuestion()).willReturn(new Question("anyId", "AnyQuestion", "anyCategory", 999,
+        given(mockQuestion.requestQuestion()).willReturn(new Question("anyId", "AnyQuestion", "anyCategory", 999,
                 Arrays.asList("anyAnswers")));
+        QuizController quizController = new QuizController(mockAnswer, mockQuestion, "anyAnswer", question);
 
         //when
         quizController.getQuestion();
@@ -43,11 +56,8 @@ public class QuizControllerTest {
         //given
         QuestionSupplier mockQuestion = mock(QuestionSupplier.class);
         AnswerSupplier mockAnswer = mock(AnswerSupplier.class);
-        CommandLineScanner mockScanner = mock(CommandLineScanner.class);
         QuizController quizController =
-                new QuizController(mockAnswer, mockQuestion, new CommandLineScanner(), "correct");
-        given(mockScanner.getPlayerDecisionWithValidation(Arrays.asList("anyValidInput"), "anyMessage")).willReturn(
-                "anyPlayerDecision");
+                new QuizController(mockAnswer, mockQuestion, "correct", question);
         given(mockQuestion.requestQuestion()).willReturn(
                 new Question("anyId", "anyQuestion", "anyCategory", 1, Arrays.asList("anyAnswers")));
 
@@ -66,11 +76,8 @@ public class QuizControllerTest {
         //given
         QuestionSupplier mockQuestion = mock(QuestionSupplier.class);
         AnswerSupplier mockAnswer = mock(AnswerSupplier.class);
-        CommandLineScanner mockScanner = mock(CommandLineScanner.class);
         QuizController quizController =
-                new QuizController(mockAnswer, mockQuestion, new CommandLineScanner(), "correct");
-        given(mockScanner.getPlayerDecisionWithValidation(Arrays.asList("anyValidInput"), "anyMessage")).willReturn(
-                "anyPlayerDecision");
+                new QuizController(mockAnswer, mockQuestion, "correct", question);
 
         //when
         systemInMock.provideLines("n");
@@ -87,11 +94,8 @@ public class QuizControllerTest {
         //given
         QuestionSupplier mockQuestion = mock(QuestionSupplier.class);
         AnswerSupplier mockAnswer = mock(AnswerSupplier.class);
-        CommandLineScanner mockScanner = mock(CommandLineScanner.class);
         QuizController quizController =
-                new QuizController(mockAnswer, mockQuestion, new CommandLineScanner(), "wrong");
-        given(mockScanner.getPlayerDecisionWithValidation(Arrays.asList("anyValidInput"), "anyMessage")).willReturn(
-                "anyPlayerDecision");
+                new QuizController(mockAnswer, mockQuestion, "wrong", question);
 
         //when
         systemInMock.provideLines("n");
@@ -108,12 +112,8 @@ public class QuizControllerTest {
         //given
         QuestionSupplier mockQuestion = mock(QuestionSupplier.class);
         AnswerSupplier mockAnswer = mock(AnswerSupplier.class);
-        CommandLineScanner mockScanner = mock(CommandLineScanner.class);
         QuizController quizController =
-                new QuizController(mockAnswer, mockQuestion, new CommandLineScanner(), "wrong");
-        given(mockScanner.getPlayerDecisionWithValidation(Arrays.asList("anyValidInput"), "anyMessage")).willReturn(
-                "anyPlayerDecision");
-        given(mockAnswer.getAndSendUserAnswer("anyId")).willReturn("anyAnswer");
+                new QuizController(mockAnswer, mockQuestion, "wrong", question);
 
         //when
         systemInMock.provideLines("y");
@@ -122,6 +122,6 @@ public class QuizControllerTest {
 
         //then
         assertThat(splitLog[0].trim()).isEqualTo("Wrong answer! Do you want to continue? [y/n]");
-        assertThat(splitLog[1].trim()).isEqualTo("Answer again: ");
+        assertThat(splitLog[1]).isEqualTo("Answer again:");
     }
 }

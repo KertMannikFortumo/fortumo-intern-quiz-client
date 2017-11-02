@@ -20,16 +20,13 @@ public class QuizController {
                 new AnswerSupplier(username, new AnswerRequest(ANSWER_URL), new CommandLineScanner());
     }
 
-    public QuizController(QuestionSupplier questionSupplier) {
-        this.questionSupplier = questionSupplier;
-    }
-
-    public QuizController(AnswerSupplier answerSupplier, QuestionSupplier questionSupplier, CommandLineScanner scanner,
-            String answerStatus)
+    public QuizController(AnswerSupplier answerSupplier, QuestionSupplier questionSupplier,
+            String answerStatus, Question question)
     {
         this.answerSupplier = answerSupplier;
         this.questionSupplier = questionSupplier;
         this.answerStatus = answerStatus;
+        this.question = question;
     }
 
     public void startTheGame() throws IOException {
