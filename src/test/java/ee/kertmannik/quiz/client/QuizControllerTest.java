@@ -9,12 +9,13 @@ import org.junit.contrib.java.lang.system.TextFromStandardInputStream;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.contrib.java.lang.system.TextFromStandardInputStream.emptyStandardInputStream;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class QuizControllerTest {
 
@@ -52,7 +53,7 @@ public class QuizControllerTest {
     }
 
     @Test
-    public void should_continue_game_if_user_answers_correctly_and_wants_to_start_the_game_again() throws IOException {
+    public void should_continue_game_if_user_answer_is_correct_and_wants_to_start_the_game_again() throws IOException {
         //given
         QuestionSupplier mockQuestion = mock(QuestionSupplier.class);
         AnswerSupplier mockAnswer = mock(AnswerSupplier.class);
@@ -72,7 +73,7 @@ public class QuizControllerTest {
     }
 
     @Test
-    public void should_end_game_if_user_answers_correctly_and_wants_to_end_the_game() throws IOException {
+    public void should_end_game_if_user_answer_is_correct_and_wants_to_end_the_game() throws IOException {
         //given
         QuestionSupplier mockQuestion = mock(QuestionSupplier.class);
         AnswerSupplier mockAnswer = mock(AnswerSupplier.class);
@@ -90,7 +91,7 @@ public class QuizControllerTest {
     }
 
     @Test
-    public void should_end_game_if_user_answers_wrongly_and_wants_to_end_the_game() throws IOException {
+    public void should_end_game_if_user_answer_is_wrong_and_wants_to_end_the_game() throws IOException {
         //given
         QuestionSupplier mockQuestion = mock(QuestionSupplier.class);
         AnswerSupplier mockAnswer = mock(AnswerSupplier.class);
@@ -108,7 +109,7 @@ public class QuizControllerTest {
     }
 
     @Test
-    public void should_display_answer_again_if_user_answers_wrongly_and_wants_to_answer_again() throws IOException {
+    public void should_display_answer_again_if_user_answer_is_wrong_and_wants_to_answer_again() throws IOException {
         //given
         QuestionSupplier mockQuestion = mock(QuestionSupplier.class);
         AnswerSupplier mockAnswer = mock(AnswerSupplier.class);
@@ -123,5 +124,77 @@ public class QuizControllerTest {
         //then
         assertThat(splitLog[0].trim()).isEqualTo("Wrong answer! Do you want to continue? [y/n]");
         assertThat(splitLog[1]).isEqualTo("Answer again:");
+    }
+
+    @Test
+    public void should_test_entire_quiz_client_game_flow_if_player_answer_is_wrong_and_doesnt_want_to_continue_integration_test()
+            throws IOException
+    {
+        //given
+
+        //when
+        PlayerGreeting PlayerGreeting = new PlayerGreeting();
+
+        systemInMock.provideLines("Kert", "wrongAnswer", "n");
+        String username = PlayerGreeting.getPlayerName();
+        PlayerGreeting.greetPlayer(username);
+
+        try {
+            QuizController quizController = new QuizController(username);
+            quizController.getQuestion();
+            quizController.postAnswer();
+            quizController.decidingContinuation();
+        } catch (QuizException exception) {
+            System.out.println("\n" + exception.getMessage());
+        }
+
+        //then
+        String[] splitLog = this.systemOutRule.getLog().trim().split("\n");
+        assertThat(splitLog[0].trim()).isEqualTo("Enter your name:");
+        assertThat(splitLog[1].trim()).isEqualTo("Hello, Kert.");
+        assertThat(splitLog[3].trim()).isEqualTo("Wrong answer! Do you want to continue? [y/n]");
+        assertThat(splitLog[4].trim()).isEqualTo("Good game! THE END");
+    }
+
+    @Test
+    public void should_test_entire_quiz_client_game_flow_if_player_answer_is_correct_and_doesnt_want_to_continue_integration_test()
+            throws IOException
+    {
+        //given
+        Map<String, String> questionsAndAnswers = new HashMap<>();
+        questionsAndAnswers.put("Who is a good boy?", "Lars");
+        questionsAndAnswers.put("Which city is Estonia's 2nd largest city?", "Tartu");
+        questionsAndAnswers.put("What kind of animal is the largest living creature on Earth?", "Whale");
+        questionsAndAnswers.put("Which plant does the Canadian flag contain?", "Maple");
+        questionsAndAnswers.put("Who is CEO of Fortumo?", "Martin Koppel");
+        questionsAndAnswers.put("Who was the second president of Estonia?", "Lennart Georg Meri");
+
+        //when
+        PlayerGreeting PlayerGreeting = new PlayerGreeting();
+
+        systemInMock.provideLines("Kert");
+        String username = PlayerGreeting.getPlayerName();
+        PlayerGreeting.greetPlayer(username);
+
+        try {
+            QuizController quizController = new QuizController(username);
+            quizController.getQuestion();
+
+            String[] splitLog = systemOutRule.getLog().split("\\)");
+            systemInMock.provideLines(questionsAndAnswers.get(splitLog[1].trim()));
+            quizController.postAnswer();
+
+            systemInMock.provideLines("n");
+            quizController.decidingContinuation();
+        } catch (QuizException exception) {
+            System.out.println("\n" + exception.getMessage());
+        }
+
+        //then
+        String[] splitLog = this.systemOutRule.getLog().trim().split("\n");
+        assertThat(splitLog[0].trim()).isEqualTo("Enter your name:");
+        assertThat(splitLog[1].trim()).isEqualTo("Hello, Kert.");
+        assertThat(splitLog[3].trim()).isEqualTo("Congrats! You answer was correct! Do you want to continue? [y/n]");
+        assertThat(splitLog[4].trim()).isEqualTo("Good game! THE END");
     }
 }
