@@ -7,7 +7,7 @@ public class CommandLineScanner {
 
     public String getUserInputWithMessage(String question) {
         Scanner scanner = new Scanner(System.in);
-        System.out.print(question);
+        System.out.println(question);
         return scanner.nextLine();
     }
 

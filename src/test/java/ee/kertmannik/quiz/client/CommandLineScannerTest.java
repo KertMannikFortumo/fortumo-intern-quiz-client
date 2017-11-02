@@ -62,11 +62,11 @@ public class CommandLineScannerTest {
         commandLineScanner.getUserInputWithMessage(message);
 
         //then
-        assertThat(this.systemOutRule.getLog()).isEqualTo(message);
+        assertThat(this.systemOutRule.getLog().trim()).isEqualTo(message);
     }
 
     @Test
-    public void should_display_message_again_if_first_input_is_not_validanswer() {
+    public void should_display_message_again_if_first_input_is_not_valid_answer() {
         //given
         String message = "anyMessage";
         List<String> validAnswers = Arrays.asList("y", "n");
@@ -74,8 +74,10 @@ public class CommandLineScannerTest {
         //when
         this.systemInMock.provideLines("asda", "n");
         commandLineScanner.getPlayerDecisionWithValidation(validAnswers, message);
+        String[] splitLog = this.systemOutRule.getLog().trim().split("\n");
 
         //then
-        assertThat(this.systemOutRule.getLog()).isEqualTo(message+message);
+        assertThat(splitLog[0].trim()).isEqualTo(message);
+        assertThat(splitLog[1]).isEqualTo(message);
     }
 }

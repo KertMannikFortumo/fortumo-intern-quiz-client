@@ -24,7 +24,9 @@ public class QuizController {
         this.questionSupplier = questionSupplier;
     }
 
-    public QuizController(AnswerSupplier answerSupplier, QuestionSupplier questionSupplier, CommandLineScanner scanner, String answerStatus) {
+    public QuizController(AnswerSupplier answerSupplier, QuestionSupplier questionSupplier, CommandLineScanner scanner,
+            String answerStatus)
+    {
         this.answerSupplier = answerSupplier;
         this.questionSupplier = questionSupplier;
         this.answerStatus = answerStatus;
@@ -36,10 +38,14 @@ public class QuizController {
         this.decidingContinuation();
     }
 
+    private void answerAgain() throws IOException {
+        this.postAnswer();
+        this.decidingContinuation();
+    }
+
     public void getQuestion() throws IOException {
         this.question = this.questionSupplier.requestQuestion();
-        System.out.print("\n("
-                + this.question.getCategory()
+        System.out.println("(" + this.question.getCategory()
                 + ", "
                 + this.question.getDifficulty()
                 + ") "
@@ -55,11 +61,11 @@ public class QuizController {
         CommandLineScanner scanner = new CommandLineScanner();
         if ("wrong".equals(this.answerStatus)) {
             String playerDecision =
-                    scanner.getPlayerDecisionWithValidation(Arrays.asList("y", "n"), "Wrong answer! Do you want to continue? [y/n]");
+                    scanner.getPlayerDecisionWithValidation(Arrays.asList("y", "n"),
+                            "Wrong answer! Do you want to continue? [y/n]");
             if (playerDecision.equals("y")) {
                 System.out.println("Answer again: ");
-                this.postAnswer();
-                this.decidingContinuation();
+                this.answerAgain();
             } else if (playerDecision.equals("n")) {
                 System.out.println("Good game! THE END");
             }
