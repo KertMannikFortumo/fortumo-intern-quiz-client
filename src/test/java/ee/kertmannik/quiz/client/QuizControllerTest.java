@@ -162,12 +162,8 @@ public class QuizControllerTest {
     {
         //given
         Map<String, String> questionsAndAnswers = new HashMap<>();
-        questionsAndAnswers.put("Who is a good boy?", "Lars");
-        questionsAndAnswers.put("Which city is Estonia's 2nd largest city?", "Tartu");
-        questionsAndAnswers.put("What kind of animal is the largest living creature on Earth?", "Whale");
-        questionsAndAnswers.put("Which plant does the Canadian flag contain?", "Maple");
-        questionsAndAnswers.put("Who is CEO of Fortumo?", "Martin Koppel");
-        questionsAndAnswers.put("Who was the second president of Estonia?", "Lennart Georg Meri");
+        questionsAndAnswers.put("How old is Estonia?", "100");
+        questionsAndAnswers.put("Kes on tubli poiss?", "Lars");
 
         //when
         PlayerGreeting PlayerGreeting = new PlayerGreeting();
